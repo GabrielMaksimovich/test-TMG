@@ -1,0 +1,159 @@
+.nav-wrapper {
+  box-shadow: 0px 3px 11px rgba(0, 0, 0, 0.07);
+  background-color: #fff;
+
+  &--sticky {
+    position: fixed;
+    z-index: 99;
+    top: 0;
+
+    width: 100%;
+  }
+}
+
+.nav {
+  padding: 10px 0;
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: $header-height;
+  }
+
+  &__logo {
+    width: 190px;
+    height: 50px;
+  }
+
+  &__links {
+    display: flex;
+    align-items: center;
+  }
+
+  &__list {
+    display: none;
+
+    gap: 30px;
+    margin-right: 50px;
+
+    @include onTablet {
+      display: none;
+    }
+
+    @include onDesktop {
+      display: flex;
+    }
+  }
+
+  &__link {
+    position: relative;
+
+    font-family: 'Varela Round', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+
+    color: $color-primary;
+
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+
+      display: block;
+      height: 1px;
+      width: 0;
+
+      background-color: #db1e46;
+      transition: width .3s ease;
+    }
+
+    &:hover {
+      &::after {
+        width: 100%;
+      }
+    }
+  }
+
+  &__link-arrow {
+    width: 13px;
+    height: 13px;
+  }
+
+  &__btn-search {
+    display: block;
+
+    width: 45px;
+    height: 45px;
+
+    margin-right: 21px;
+
+    background-color: $color-white;
+    border: 1px solid $color-primary;
+    border-radius: 50px;
+    background-image: url('../images/header-icons/icon-search.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+
+    outline: none;
+    cursor: pointer;
+
+    transition: background-color .3s ease;
+
+    @include onDesktop {
+      width: 60px;
+      height: 60px;
+    }
+
+    @include onMobile {
+      display: none;
+    }
+
+    &:hover {
+      background-color: $color-primary;
+      background-image: url('../images/header-icons/icon-search-white.svg');
+    }
+  }
+
+  &__btn-cart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    width: 137px;
+    height: 60px;
+
+    background-color: $color-primary;
+    border: 2px solid transparent;
+    border-radius: 50px;
+
+
+
+    color: $color-white;
+
+    transition: all .3s ease;
+
+    &:hover {
+      background: $color-white;
+      border: 2px solid $color-primary;
+
+      color: $color-primary;
+
+      div {
+        background-image: url('../images/header-icons/icon-cart-primary.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+
+
+
+        fill: $color-primary;
+      }
+    }
+  }
+}
+

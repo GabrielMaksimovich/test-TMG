@@ -1,0 +1,83 @@
+.lang-toggle-switch {
+  $comp-font-size: px-to-em(11px);
+  display: inline-block;
+  position: relative;
+  font-size: $comp-font-size;
+
+  &__checkbox {
+    cursor: pointer;
+    position: absolute;
+    left: -100vw;
+    //@include visually-hidden();
+
+    &:checked {
+      & + .lang-toggle-switch__label:before {
+        content: 'UA';
+        right: auto;
+        left: 10px;
+        transition: all 0.3s ease;
+      }
+      & + .lang-toggle-switch__label:after {
+        content: 'ENG';
+        left: 30px;
+        transition: all 0.3s ease;
+      }
+    }
+  }
+  &__label {
+    position: relative;
+    display: block;
+
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    line-height: 120%;
+
+    cursor: pointer;
+
+    color: $color-primary;
+    background: none;
+
+    width: px-to-em-coeff(66px,$comp-font-size);
+    height: px-to-em-coeff(29px,$comp-font-size);
+
+    border: 1px solid $color-primary;
+    border-radius: 12px;
+
+    transition: all 0.3s ease;
+
+    &:before {
+      content: 'ENG';
+
+      position: absolute;
+      top: 7px;
+      right: 5px;
+
+      font-size: 12px;
+      font-weight: 500;
+
+      transition: all 0.3s ease;
+    }
+
+    &:after {
+      content: 'UA';
+
+      position: absolute;
+      top: 2px;
+      left: 2px;
+
+      width: 30px;
+      padding: 5px 0;
+
+      text-align: center;
+
+      color: #fff;
+
+      background: $color-primary;
+      border-radius: 26px;
+      box-shadow: 0 0 6px -2px #111;
+
+      transition: all 0.3s ease;
+    }
+  }
+}
+

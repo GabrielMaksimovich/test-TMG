@@ -1,0 +1,58 @@
+.cart {
+  position: relative;
+
+  &__text {
+    font-family: 'Varela Round', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 120%;
+
+    margin-right: 9px;
+  }
+
+  &__items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transform: translate(9%, 9%);
+
+    width: 22px;
+    height: 22px;
+
+    font-family: 'Varela Round', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 11px;
+    text-align: center;
+
+
+    background: $color-white;
+    border: 1px solid $color-primary;
+    border-radius: 50px;
+
+    color: $color-primary;
+  }
+
+  &__image {
+    width: 30px;
+    height: 30px;
+
+    background-image: url('../images/header-icons/icon-cart.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+
+  &__circle {
+    position: absolute;
+    top: -9px;
+    right: -6px;
+
+    width: 26px;
+    height: 26px;
+
+    background: $color-white;
+    border-radius: 50px;
+  }
+}

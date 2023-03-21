@@ -1,1 +1,1 @@
- - [DEMO LINK](https://gabrielmaksimovich.github.io/test-TMG/)
+ - [DEMO LINK](https://GabrielMaksimovich.github.io/test-TMG/)

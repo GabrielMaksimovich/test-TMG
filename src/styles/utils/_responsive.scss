@@ -1,0 +1,367 @@
+// functions
+@function strip-units($number) {
+  @return $number / ($number * 0 + 1);
+}
+@function px-to-em($target, $context: $base-font-size) {
+  @return (strip-units($target) / strip-units($context)) * 1em;
+}
+
+@function px-to-em-coeff($target,$coefficient, $context: $base-font-size) {
+  @return to-em($target / ($coefficient * $context)) * 1em;
+}
+
+@function px-to-rem($target, $context: $base-font-size) {
+  @return ($target / $context) * 1rem;
+}
+@function px-to-rem-coeff($target,$coefficient, $context: $base-font-size) {
+  @return ($target / ($coefficient * $context)) * 1rem;
+}
+
+@function to-em($value) {
+  @return $value * 1em;
+}
+@function to-px($value) {
+  @return $value * 1px;
+}
+@function to-rem($value) {
+  @return $value * 1rem;
+}
+@function font-size-to-root-proportion($target,$context : $base-font-size) {
+  @return $target/ $context;
+}
+@function font-size-px-to-root-proportion($target,$context : $base-font-size) {
+  @return strip-units($target)/ strip-units($context);
+}
+@function font-size-px-to-em-proportion($target,$context-em : px-to-em($base-font-size)) {
+  @return strip-units($target)/ strip-units($context-em * $base-font-size);
+}
+// convert units
+@function convert($value, $currentUnit, $convertUnit){
+  @if $currentUnit == px{
+
+    @if $convertUnit == ems{
+      @return $value / 16 + 0em;
+    }
+    @else if $convertUnit == percent{
+      @return percentage($value / 16);
+    }
+
+  }@else if $currentUnit == ems{
+
+    @if $convertUnit == px{
+      @return $value * 16 + 0px;
+    }
+    @else if $convertUnit == percent{
+      @return percentage($value);
+    }
+
+  }@else if $currentUnit == percent{
+
+    @if $convertUnit == px{
+      @return $value * 16 / 100 + 0px;
+    }
+    @else if $convertUnit == ems{
+      @return $value / 100 + 0em;
+    }
+
+  }@else if $currentUnit == pts{
+
+    @if $convertUnit == px{
+      @return $value * 1.3333 +0px;
+    }
+    @else if $convertUnit == ems{
+      @return $value / 12 + 0em;
+    }
+    @else if $convertUnit == percent{
+      @return percentage($value / 12)
+    }
+  }
+}
+
+// Convert unitless px size to rem
+//
+// @param string $size
+//   A unitless px size
+@function inRem($size) {
+  $remSize: $size / 16;
+  @return #{$remSize}rem;
+}
+
+// Get font size
+//
+// @param string $size
+// A unitless px size
+// retrieve size from $font-size map ie. `size(media-query, t-shirt size)`
+@function size($media-query, $t-shirt-size, $unitless: null) {
+	$thissize: map-get(map-get($font-size, $media-query), $t-shirt-size);
+	@if $unitless == rem{
+	  @return inRem($thissize);
+	}
+	@else {
+		@return $thissize;
+	}
+}
+@function get-font-size($size: 'm', $media-query: 's') {
+  $this-size: map-get(map-get($font-size, $media-query), $size);
+  // @return inRem($this-size);
+  // lets keep it unit agnostic
+  @return $this-size;
+}
+@mixin type-size($size-s, $size-m: $size-s, $size-l: $size-m){
+  font-size: inRem(get-font-size($size-s, 's'));
+  @media ($m){ font-size: inRem(get-font-size($size-m, 'm')); }
+  @media ($l){ font-size: inRem(get-font-size($size-l, 'l')); }
+}
+@mixin margin-bottom($factor, $value-s, $value-m: $value-s, $value-l: $value-m) {
+  margin-bottom: inRem( get-font-size($value-s, 's') * $factor);
+  @media ($m){ margin-bottom: inRem( get-font-size($value-m, 'm') * $factor); }
+  @media ($l){ margin-bottom: inRem( get-font-size($value-l, 'l') * $factor); }
+}
+@mixin margin-top($factor, $value-s, $value-m: $value-s, $value-l: $value-m) {
+  margin-top: inRem( get-font-size($value-s, 's') * $factor);
+  @media ($m){ margin-top: inRem( get-font-size($value-m, 'm') * $factor); }
+  @media ($l){ margin-top: inRem( get-font-size($value-l, 'l') * $factor); }
+}
+@mixin margin-right($factor, $value-s, $value-m: $value-s, $value-l: $value-m) {
+  margin-right: inRem( get-font-size($value-s, 's') * $factor);
+  @media ($m){ margin-right: inRem( get-font-size($value-m, 'm') * $factor); }
+  @media ($l){ margin-right: inRem( get-font-size($value-l, 'l') * $factor); }
+}
+@mixin margin-left($factor, $value-s, $value-m: $value-s, $value-l: $value-m) {
+  margin-left: inRem( get-font-size($value-s, 's') * $factor);
+  @media ($m){ margin-left: inRem( get-font-size($value-m, 'm') * $factor); }
+  @media ($l){ margin-left: inRem( get-font-size($value-l, 'l') * $factor); }
+}
+
+
+// Embed a typeface.
+//
+// @param string $typeface
+//   A font family from the $typefaces map.
+@mixin typeface($typeface) {
+  $typeface-name: $typeface;
+  $typeface: map-get($typefaces, $typeface);
+
+  $font-family: false;
+  $letter-spacing: false;
+  $weight: false;
+  $style: false;
+  $case: false;
+  $line-height: false;
+
+  // Assign values to variables when $typeface is a keyed map.
+  @if type-of($typeface) == "map" {
+    @if map-has-key($typeface, font-family) {
+      $font-family: map-get($typeface, font-family);
+    }
+    @if map-has-key($typeface, letter-spacing) {
+      $letter-spacing: map-get($typeface, letter-spacing);
+    }
+    @if map-has-key($typeface, weight) {
+      $weight: map-get($typeface, weight);
+    }
+    @if map-has-key($typeface, style) {
+      $style: map-get($typeface, style);
+    }
+    @if map-has-key($typeface, case) {
+      $case: map-get($typeface, case);
+    }
+    @if map-has-key($typeface, line-height) {
+      $line-height: map-get($typeface, line-height);
+    }
+  }
+
+  // Assign values to variables when $typeface is shorthand.
+  @if type-of($typeface) == "list" {
+    @if (list-separator($typeface) == "comma") {
+      // This shorthand is just a list of fonts.
+      $font-family: $typeface;
+    }
+    @else {
+      @each $value in $typeface {
+        // This is a font-family.
+        @if type-of($value) == "list" {
+          $font-family: $value;
+        }
+        // This is a letter-spacing value.
+        @if type-of($value) == "number" {
+          $letter-spacing: $value;
+        }
+        // This is a font-weight value.
+        @if map-has-key($font-weight, $value) {
+          $weight: $value;
+        }
+        // This is a font-weight value.
+        @if map-has-key($line-height, $value) {
+          $line-height: $value;
+        }
+        // This is a case value.
+        @else if type-of($value) == "string" and index($text-transform-values, $value) != null {
+          $case: $value;
+        }
+        // This is a style value.
+        @else if type-of($value) == "string" and index($font-style-values, $value) != null {
+          $style: $value;
+        }
+      }
+    }
+  }
+
+  // Output properties.
+  @if $font-family {
+    font-family: $font-family;
+  }
+  @else {
+    @error "Typeface '#{$typeface-name}' does not have a font-family";
+  }
+  @if $letter-spacing {
+    @if ($letter-spacing == 0) {
+      letter-spacing: 0;
+    }
+    @else {
+      // letter-spacing: calculate-em-px($letter-spacing, $base-font-size);
+      letter-spacing: #{$letter-spacing}em;
+    }
+  }
+  @if $line-height {
+    line-height: $line-height;
+  }
+  @if $weight {
+    font-weight: $weight;
+  }
+  @if $style {
+    font-style: $style;
+  }
+  @if $case {
+    text-transform: $case;
+  }
+}
+
+// Responsive mixins
+$default-breakpoints--desktop-first: (
+  'small-phones' : 320px,
+  'phones' : 480px,
+  'large-phones' : 560px,
+  'small-tablets' : 600px,
+  'tablets' : 768px,
+  'large-tablets' : 800px,
+  'desktops' : 992px,
+  'large-desktops' : 1100px,
+  'widescreens' : 1200px,
+  'largescreens' : 1440px,
+  'x-largescreens' : 1600px
+);
+$default-breakpoints--mobile-first: (
+  'small-phones' : 320px,
+  'phones' : 480px,
+  'large-phones' : 560px,
+  'small-tablets' : 600px,
+  'tablets' : 768px,
+  'large-tablets' : 800px,
+  'desktops' : 992px,
+  'large-desktops' : 1100px,
+  'widescreens' : 1200px,
+  'largescreens' : 1440px,
+  'x-largescreens' : 1600px
+);
+@mixin respond-to-less-than($breakpoint-name,$breakpoints:$default-breakpoints--desktop-first) {
+  // Retrieves the value from the key
+  $value: map-get($breakpoints, $breakpoint-name);
+
+  // If the key exists in the map
+  @if $value != null {
+    // Prints a media query based on the value
+    @media only screen and (max-width: $value) {
+      @content;
+    }
+  }
+    // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint-name}`. "
+        + "Please make sure it is defined in `$breakpoints` map.";
+  }
+}
+
+@mixin respond-to-less-than-height($breakpoint-name,$breakpoints:$default-breakpoints--desktop-first) {
+  // Retrieves the value from the key
+  $value: map-get($breakpoints, $breakpoint-name);
+
+  // If the key exists in the map
+  @if $value != null {
+    // Prints a media query based on the value
+    @media only screen and (max-height: $value) {
+      @content;
+    }
+  }
+    // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint-name}`. "
+        + "Please make sure it is defined in `$breakpoints` map.";
+  }
+}
+
+@mixin respond-to-greater-than($breakpoint-name,$breakpoints:$default-breakpoints--mobile-first) {
+  // Retrieves the value from the key
+  $value: map-get($breakpoints, $breakpoint-name);
+
+  // If the key exists in the map
+  @if $value != null {
+    // Prints a media query based on the value
+    @media only screen and (min-width: $value) {
+      @content;
+    }
+  }
+    // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint-name}`. "
+        + "Please make sure it is defined in `$breakpoints` map.";
+  }
+}
+
+@mixin respond-to-greater-than-height($breakpoint-name,$breakpoints:$default-breakpoints--mobile-first) {
+  // Retrieves the value from the key
+  $value: map-get($breakpoints, $breakpoint-name);
+
+  // If the key exists in the map
+  @if $value != null {
+    // Prints a media query based on the value
+    @media only screen and (min-width: $value) {
+      @content;
+    }
+  }
+    // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint-name}`. "
+        + "Please make sure it is defined in `$breakpoints` map.";
+  }
+}
+
+@mixin respond-to-px($breakpoint-value) {
+  @if $breakpoint-value != null {
+    // Prints a media query based on the value
+    @media only screen and (max-width: $breakpoint-value) {
+      @content;
+    }
+  } @else {
+    @warn "Value cannot be null";
+  }
+}
+
+@mixin respond-to-mobile-first($breakpoint-name,$breakpoints:$default-breakpoints) {
+  // Retrieves the value from the key
+  $value: map-get($breakpoints, $breakpoint-name);
+
+  // If the key exists in the map
+  @if $value != null {
+    // Prints a media query based on the value
+    @media only screen and (min-width: $value) {
+      @content;
+    }
+  }
+
+    // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint-name}`. "
+        + "Please make sure it is defined in `$breakpoints` map.";
+  }
+}

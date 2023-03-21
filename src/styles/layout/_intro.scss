@@ -1,0 +1,167 @@
+@import '../utils/variables';
+
+.intro {
+  position: relative;
+  background-image: url('../images/bg.png');
+
+  //height: 100vh - ($top-header-height + $header-height);
+  height: 86vh;
+
+  &__content {
+    display: flex;
+    justify-content: end;
+
+    max-width: 1110px;
+    margin: 0 auto;
+
+    padding: 170px 5vw 0;
+
+    @include onTablet {
+      padding: 256px 0 0 0;
+    }
+  }
+
+  &__image {
+    position: absolute;
+    left: -115px;
+    bottom: 0;
+
+    transform: translate(0,7%);
+
+    width: 70%;
+    height: auto;
+
+    z-index: 0;
+
+    @include onDesktop {
+      display: block;
+
+      width: 849px;
+      height: 547px;
+    }
+  }
+
+  &__fruit-4 {
+    display: none;
+    position: absolute;
+    bottom: 4%;
+    right: 47%;
+
+    z-index: 999;
+
+    transform: translate(0%, 0%);
+
+    @include onDesktop {
+      display: block;
+    }
+  }
+
+  &__fruit-3 {
+    display: none;
+
+    position: absolute;
+    top: 0;
+
+    transform: translate(-50%, 0%);
+
+    @include onDesktop {
+      display: block;
+    }
+  }
+
+  &__fruit-2 {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    transform: translate(40%, 0%);
+
+    @include onDesktop {
+      display: block;
+    }
+  }
+
+  &__fruit-1 {
+    display: none;
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    transform: translate(40%, 50%);
+    overflow: hidden;
+
+    @include onDesktop {
+      display: block;
+    }
+  }
+
+  &__box {
+    display: flex;
+    flex-direction: column;
+
+    width: 540px;
+
+    z-index: 2;
+  }
+
+  &__title {
+    font-family: 'Varela Round', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 110%;
+
+    color: $color-white;
+
+    margin-bottom: 40px;
+
+    @include onTablet {
+      font-size: 45px;
+    }
+
+    @include onDesktop {
+      font-size: 60px;
+    }
+  }
+
+  &__btn {
+    width: 170px;
+    height: 40px;
+
+    font-family: 'Varela Round', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 120%;
+
+    color: $color-secondary;
+
+    background: $color-btn-gift;
+    border: none;
+    box-shadow: 0 29px 10px -20px rgba(255, 205, 49, 0.35);
+    border-radius: 80px;
+
+    transition: background .3s ease;
+
+    @include onTablet {
+      width: 280px;
+      height: 40px;
+
+      font-size: 18px;
+    }
+
+    @include onDesktop {
+      width: 340px;
+      height: 80px;
+
+      font-size: 27px;
+    }
+
+    &:hover {
+      border: 4px solid $color-btn-gift;
+      background: transparent;
+      color: $color-white;
+    }
+  }
+}
