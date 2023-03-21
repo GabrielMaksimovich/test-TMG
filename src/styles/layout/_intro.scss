@@ -1,8 +1,8 @@
-@import '../utils/variables';
+@import "../utils/variables";
 
 .intro {
   position: relative;
-  background-image: url('../images/bg.png');
+  background-image: url("../images/bg.png");
 
   //height: 100vh - ($top-header-height + $header-height);
   height: 86vh;
@@ -17,7 +17,7 @@
     padding: 170px 5vw 0;
 
     @include onTablet {
-      padding: 256px 0 0 0;
+      padding: 256px 0 0;
     }
   }
 
@@ -107,7 +107,7 @@
   }
 
   &__title {
-    font-family: 'Varela Round', sans-serif;
+    font-family: "Varela Round", sans-serif;
     font-weight: 400;
     font-size: 30px;
     line-height: 110%;
@@ -128,8 +128,9 @@
   &__btn {
     width: 170px;
     height: 40px;
+    cursor: pointer;
 
-    font-family: 'Varela Round', sans-serif;
+    font-family: "Varela Round", sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -142,7 +143,7 @@
     box-shadow: 0 29px 10px -20px rgba(255, 205, 49, 0.35);
     border-radius: 80px;
 
-    transition: background .3s ease;
+    transition: background 0.3s ease;
 
     @include onTablet {
       width: 280px;
